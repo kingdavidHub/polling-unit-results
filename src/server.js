@@ -60,7 +60,6 @@ app.get("/api/polling-units", (req, res) => {
 });
 
 app.get("/api/lga", (req, res) => {
-  const { lga_id } = req.query;
   try {
     const query = `
     SELECT *

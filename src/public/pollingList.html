@@ -77,8 +77,6 @@
         fetch(`/api/polling-units/lga?lga_id=${lgaId}`)
           .then((response) => response.json())
           .then((data) => {
-            console.log(data);
-
             const resultsDiv = document.getElementById("results");
             resultsDiv.innerHTML = data.data
               .map((unit) => {
