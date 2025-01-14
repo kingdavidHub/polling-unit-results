@@ -42,6 +42,10 @@ app.get("/lga", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "pollingList.html"));
 });
 
+app.get("/party", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "party.html"));
+});
+
 // API endpoint to get polling unit results for Delta State (state id: 25)
 app.get("/api/polling-units", (req, res) => {
   try {
@@ -134,4 +138,3 @@ app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
 
-// use LGA TO FIND THE STATES

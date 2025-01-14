@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Parties</title>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        fetch("/api/parties")
+          .then((response) => response.json())
+          .then((data) => {
+            const partyList = document.getElementById("party-list");
+            data.forEach((party) => {
+              const listItem = document.createElement("li");
+              listItem.textContent = party.partyname;
+              partyList.appendChild(listItem);
+            });
+          })
+          .catch((error) => console.error("Error fetching parties:", error));
+      });
+    </script>
+  </head>
+  <body>
+    <h1>Parties</h1>
+    <a href="/">Home Page</a>
+    <ul id="party-list"></ul>
+  </body>
+</html>
