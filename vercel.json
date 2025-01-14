@@ -1,7 +1,0 @@
-{
-  "rewrites": [
-    { "source": "/", "destination": "/index.html" },
-    { "source": "/delta", "destination": "/delta.html" },
-    { "source": "/lga", "destination": "/pollingList.html" }
-  ]
-}

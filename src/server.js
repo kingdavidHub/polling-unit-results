@@ -30,17 +30,6 @@ async function connectDb() {
 
 app.use(express.static(path.join(__dirname, "public")));
 
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "index.html"));
-});
-
-app.get("/delta", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "delta.html"));
-});
-
-app.get("/lga", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "pollingList.html"));
-});
 
 app.get("/party", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "party.html"));
