@@ -31,9 +31,11 @@ async function connectDb() {
 app.use(express.static(path.join(__dirname, "public")));
 
 
-app.get("/party", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "party.html"));
-});
+app.get("/api/test", (req, res) => {
+  res.status(200).json({
+    message: "States endpoint",
+  })
+})
 
 // API endpoint to get polling unit results for Delta State (state id: 25)
 app.get("/api/polling-units", (req, res) => {
