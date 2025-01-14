@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Polling Unit Results</title>
+    <link rel="stylesheet" href="styles/styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Polling Unit Results</h1>
+      
+      <a href="/">Homepage</a>
+      <br />
+
+      <label for="lgaSelect">Select Local Government Area:</label>
+      <select name="lgaSelect" id="lgaSelect">
+        <!-- Options will be dynamically populated here -->
+      </select>
+      <form id="pollingForm">
+        <button type="submit">Get Polling Units</button>
+      </form>
+      <div id="results"></div>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        fetch("/api/lga")
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error(`Error fetching LGAs: ${response.statusText}`);
+            }
+            return response.json();
+          })
+          .then((data) => {
+            const lgaSelect = document.getElementById("lgaSelect");
+            lgaSelect.innerHTML = "";
+            if (data && data.length > 0) {
+              data.forEach((lga) => {
+                const option = document.createElement("option");
+                option.value = lga.lga_id;
+                option.textContent = lga.lga_name;
+                if (lga.isSelected) {
+                  option.selected = true;
+                }
+
+                lgaSelect.appendChild(option);
+              });
+
+              const selectedOption =
+                lgaSelect.querySelector("option[selected]");
+              if (selectedOption) {
+                lgaSelect.value = selectedOption.value;
+              }
+            } else {
+              const defaultOption = document.createElement("option");
+              defaultOption.textContent = "No LGAs available";
+              defaultOption.disabled = true;
+              defaultOption.selected = true;
+              lgaSelect.appendChild(defaultOption);
+            }
+          })
+          .catch((error) => {
+            console.error("Error loading LGAs:", error);
+          });
+      });
+
+      document
+        .getElementById("pollingForm")
+        .addEventListener("submit", (event) => {
+          event.preventDefault();
+          fetchPollingUnits();
+        });
+
+      function fetchPollingUnits() {
+        const lgaId = document.getElementById("lgaSelect").value;
+        fetch(`/api/polling-units/lga?lga_id=${lgaId}`)
+          .then((response) => response.json())
+          .then((data) => {
+            console.log(data);
+
+            const resultsDiv = document.getElementById("results");
+            resultsDiv.innerHTML = data.data
+              .map((unit) => {
+                return `
+                <div class="polling-unit">
+                  <h2>${unit?.polling_unit_name}</h2>
+                  <p>Ward  ${unit?.ward_id}<p>
+                  <p>Ward Name ${unit?.ward_name}<p>
+                  <p>Polling Description: ${unit?.polling_unit_description}</p>
+                  <p>Unique ID: ${unit?.state_name}</p>
+                </div>
+              `;
+              })
+              .join("");
+          });
+      }
+    </script>
+  </body>
+</html>
